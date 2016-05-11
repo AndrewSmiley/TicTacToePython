@@ -19,10 +19,11 @@ sock.connect(server_address)
 sock.send(str(client_id))
 #once we've connected just keep it running...
 while True:
+    print "waiting for user input: "
     msg = raw_input()
     if msg == 'end':
         break
-    sock.send("%s from client %s", (msg, client_id))
+    sock.send("%s from client %s"% (msg, client_id))
 
     #Receiving from client
     data = sock.recv(1024)

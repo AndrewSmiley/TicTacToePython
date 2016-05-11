@@ -13,20 +13,25 @@ def serverGame(connection):
     data = connection.recv(1024)
 
 
-    while not data:
-        data = connection.recv(1024)
-    server_id = data
-    f = open("%s" % server_id, "a")
-    f.write("Running in  thread %s\n" %server_id)
+    # while not data:
+    #     data = connection.recv(1024)
+    # server_id = data
+    # f = open("%s" % server_id, "a")
+    # f.write("Running in  thread %s\n" %server_id)
+    f = open("log.log" , "a+")
     while True:
-        msg = raw_input()
-        connection.send("%s from server %s", msg, server_id)
-        f.write("%s from server %s\n", msg, server_id)
+        msg = "Message Recieved"
+        # msg = raw_input()
+        connection.send("%s"% msg)
+
+
         data = connection.recv(1024)
         while not data:
             data = connection.recv(1024)
-        print "From server: %s" %data
-        f.write("From server: %s\n" %data)
+        f.write("client> %s\n" % data)
+        # print "From server: %s" %data
+
+        f.write("server> %s \n" %msg)
 
 
 
@@ -57,9 +62,10 @@ while 1:
     #wait to accept a connection - blocking call
     conn, addr = s.accept()
     print 'Connected with ' + addr[0] + ':' + str(addr[1])
+    serverGame(conn)
     thread = Thread(target = serverGame, args =[conn])
     thread.start()
-    # thread.join()
+    thread.join()
     print "thread finished...exiting"
 
 
